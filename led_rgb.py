@@ -2,7 +2,7 @@ from machine import Pin
 
 r = Pin(15, Pin.OUT)
 g = Pin(2, Pin.OUT)
-b = Pin(0, Pin.OUT)
+b = Pin(4, Pin.OUT)
 
 def rgb_on(R, G, B):
     r.value(R)

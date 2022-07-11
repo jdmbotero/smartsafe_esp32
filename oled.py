@@ -9,13 +9,34 @@ def oled_clean():
     oled.fill(0)
     
 def show_time(time):
-    format_time = str("Hora: {:02}:{:02}:{:02}".format(time[3], time[4], time[5]))
+    format_time = str("Hora:  {:02}:{:02}:{:02}".format(time[3], time[4], time[5]))
     print(format_time)
     oled.text(format_time, 0, 0)
-    oled.show()
+    #oled.show()
     
 def show_distance(distance):
-    format_distance = str("Dist: {:02.2f}cm".format(distance))
+    format_distance = str("Dist:  {:02.2f}cm".format(distance))
     print(format_distance)
     oled.text(format_distance, 0, 10)
+    #oled.show()
+
+def show_light_status(status):
+    format_status = str("Luz:   {}".format(status))
+    print(format_status)
+    oled.text(format_status, 0, 20)
+    #oled.show()
+
+def show_door_status(status):
+    format_status = str("Puerta:  {}".format(status))
+    print(format_status)
+    oled.text(format_status, 0, 30)
+    #oled.show()
+
+def show_connection_status(status):
+    format_status = str("Conex:  {}".format(status))
+    print(format_status)
+    oled.text(format_status, 0, 40)
+    #oled.show()
+
+def oled_update():
     oled.show()
