@@ -26,3 +26,7 @@ def rgb_on_purple():
 
 def rgb_on_white():
     return rgb_on(0, 1, 1)
+
+if __name__==("__main__"):
+    while True:
+        rgb_on_red()
