@@ -1,10 +1,13 @@
 from machine import Pin, PWM
-from utime import sleep_ms
 
-servo = PWM(Pin(13), freq=50)
+servo = PWM(Pin(16), freq=45)
 
 def open_door():
-    servo.duty(125)
+    servo.duty(20)
 
 def close_door():
-    servo.duty(25)
+    servo.duty(50)
+    
+close_door()
+if __name__==("__main__"):
+    open_door()

@@ -20,3 +20,7 @@ def do_connect():
     
 def currenttime():
     return time.localtime()
+
+def gm_time():
+    gm = time.gmtime()
+    return str("{}-{}-{}T{}:{}:{}Z".format(gm[0], gm[1], gm[2], gm[3], gm[4], gm[5]))

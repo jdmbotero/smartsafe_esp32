@@ -1,5 +1,6 @@
 from json import FirebaseJson
 from firebase_auth import FirebaseAuth
+from uuid import uuid4
 import ujson
 import ufirestore
 import machine
@@ -23,18 +24,18 @@ def firestore_init():
     ufirestore.set_access_token(auth.session.access_token)
 
 def add_or_update_box(box):
-  print("Updating database...")
+  print("Updating box in database...")
   doc = FirebaseJson()
   doc.set("id/stringValue", device_id())
   doc.set("doorStatus/stringValue", box['doorStatus'])
   doc.set("distanceObject/doubleValue",  box['distanceObject'])
   doc.set("lightStatus/stringValue", box['lightStatus'])
 
-  document = ufirestore.patch("boxes/" + device_id(), doc, update_mask=["id", "doorStatus", "distanceObject", "lightStatus"], bg = False)
-  print("Database updated.")
+  ufirestore.patch("boxes/" + device_id(), doc, update_mask=["id", "doorStatus", "distanceObject", "lightStatus"], bg = False)
+  print("Box updated.")
 
 def get_box_info():
-  print("Getting info from database...")
+  print("Getting info of box from database...")
   document = ufirestore.get("boxes/" + device_id())
   doc = FirebaseJson.from_raw(document)
   if doc["fields"].exists("doorAction"):
@@ -42,11 +43,27 @@ def get_box_info():
   else:
     door_action = "CLOSE"
 
+  if doc["fields"].exists("doorStatus"):
+    door_status = doc["fields"].get("doorStatus")
+  else:
+    door_status = "CLOSED"
+
   if doc["fields"].exists("userId"):
     connection_status = "CONNECTED"
   else:
     connection_status = "DISCONNECTED"
 
-  print("Info obtained successfully...")
-  return {"doorAction": door_action, "connectionStatus": connection_status}
+  print("Box info obtained successfully...")
+  return {"doorAction": door_action, "doorStatus": door_status, "connectionStatus": connection_status}
+
+def add_history_box(history):
+  print("Updating history in database...")
+  uuid = uuid4()
+  doc = FirebaseJson()
+  doc.set("boxId/stringValue", device_id())
+  doc.set("date/timestampValue", history['date'])
+  doc.set("doorAction/stringValue", history['doorAction'])
+
+  ufirestore.patch("history/" + str(uuid), doc, update_mask=["boxId", "date", "doorAction"], bg = False)
+  print("History updated.")
   
