@@ -1,7 +1,7 @@
 from machine import Pin
 from utime import sleep_ms
 
-magnetic = Pin(13, Pin.IN)
+magnetic = Pin(17, Pin.IN)
 
 def door_is_open():
     print(magnetic.value())

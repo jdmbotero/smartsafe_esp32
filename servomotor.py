@@ -9,4 +9,4 @@ def close_door():
     servo.duty(50)
     
 if __name__==("__main__"):
-    open_door()
+    close_door()
