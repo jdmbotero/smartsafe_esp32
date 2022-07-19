@@ -4,10 +4,9 @@ from utime import sleep_ms
 magnetic = Pin(17, Pin.IN)
 
 def door_is_open():
-    print(magnetic.value())
-    return magnetic.value() == 1
+    return magnetic.value()
 
 if __name__==("__main__"):
     while True:
-        door_is_open()
+        print(door_is_open())
         sleep_ms(200)
