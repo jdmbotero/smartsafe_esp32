@@ -1,6 +1,6 @@
 from machine import Pin
 
-led = Pin(5, Pin.OUT)
+led = Pin(16, Pin.OUT)
 
 def light_on():
     led.on()

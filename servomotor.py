@@ -1,6 +1,6 @@
 from machine import Pin, PWM
 
-servo = PWM(Pin(16), freq=50)
+servo = PWM(Pin(15), freq=50)
 
 def open_door():
     servo.duty(20)
