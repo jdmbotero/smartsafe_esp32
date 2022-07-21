@@ -3,7 +3,7 @@ from connection import do_connect, currenttime, gm_time
 from firestore import firestore_init, add_or_update_box, get_box_info, add_history_box
 from oled import oled_clean, oled_update, show_time, show_distance, show_light_status, show_door_status, show_connection_status
 from ultrasonic import distance_cm
-from led_rgb import rgb_on_red, rgb_on_blue
+from led_rgb import rgb_on_red, rgb_on_turquesa
 from light import light_on, light_off
 from light_sensor import light_is_needed
 from servomotor import open_door, close_door
@@ -11,6 +11,7 @@ from magnetic import door_is_open
 
 import _thread
 
+close_door()
 do_connect()
 firestore_init()
 
@@ -27,16 +28,27 @@ def mainLoop():
     
     while True:
         # Data from database
-        box_info = get_box_info()
+        try:
+            box_info = get_box_info()
+        except:
+            box_info = {"doorAction": "CLOSE", "doorStatus": "CLOSE", "connectionStatus": "DISCONNECTED"}
+            print("Error occurred in get box info")
         if box_info["doorAction"] == "OPEN":
             if box_info["doorStatus"] == "CLOSED":
-                add_history_box({"date": gm_time(), "doorAction": "OPEN"})
+                try:
+                    add_history_box({"date": gm_time(), "doorAction": "OPEN"})
+                except:
+                    print("Error occurred in history update")
                 open_door()
         else:
             if box_info["doorStatus"] == "OPEN":
-                add_history_box({"date": gm_time(), "doorAction": "CLOSE"})
+                try:
+                    add_history_box({"date": gm_time(), "doorAction": "CLOSE"})
+                except:
+                    print("Error occurred in history update")
                 close_door()
 
+        sleep(1)
         if box_info["connectionStatus"] == "CONNECTED":
             rgb_on_turquesa()
             show_connection_status("Conectado")
@@ -45,8 +57,11 @@ def mainLoop():
             show_connection_status("Desconectado")
 
         # Data to update in database
-        add_or_update_box({"doorStatus": door_status, "distanceObject": distance, "lightStatus": light_status})
-        sleep(5)
+        try:
+            add_or_update_box({"doorStatus": door_status, "distanceObject": distance, "lightStatus": light_status})
+        except:
+            print("Error occurred in box update")
+        sleep(1)
     
 def timeLoop():
     while True:
